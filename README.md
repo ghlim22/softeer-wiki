@@ -1,2 +1,1 @@
 # softeer-wiki
-

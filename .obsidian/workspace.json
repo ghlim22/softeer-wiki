@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "da21504aea126dca",
@@ -184,6 +183,7 @@
   "lastOpenFiles": [
     "missions/week01/7월 10일.md",
     "missions/week01/7월 11일.md",
+    "missions/week01/1주차 회고.md",
     "missions/week01/7월 9일.md",
     "README.md",
     "missions/week01",

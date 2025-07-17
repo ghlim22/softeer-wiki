@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "missions/week02/7월 16일.md",
+                "file": "missions/week02/7월 17일.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "7월 16일"
+              "title": "7월 17일"
             }
           }
         ]
@@ -201,8 +201,9 @@
   },
   "active": "6fac66a86b99fbd9",
   "lastOpenFiles": [
-    "missions/week02/7월 14일.md",
     "missions/week02/7월 16일.md",
+    "missions/week02/7월 17일.md",
+    "missions/week02/7월 14일.md",
     "missions/week02/7월 15일.md",
     "missions/week02/가상 스레드.md",
     "missions/week01/Untitled.md",

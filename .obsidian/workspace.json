@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "missions/week03/7월 21일.md",
+                "file": "missions/week03/7월 22일.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "7월 21일"
+              "title": "7월 22일"
             }
           }
         ]
@@ -181,8 +181,9 @@
   },
   "active": "6fac66a86b99fbd9",
   "lastOpenFiles": [
-    "missions/week02/7월 18일.md",
     "missions/week03/7월 21일.md",
+    "missions/week03/7월 22일.md",
+    "missions/week02/7월 18일.md",
     "missions/week02/7월 14일.md",
     "missions/week02/2주차 회고.md",
     "missions/week02/mission-3.md",

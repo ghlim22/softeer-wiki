@@ -19,3 +19,11 @@ JobParameters: JobInstance들은 JobParameter를 통해 다른 JobInstane들과 
 A `JobExecution` refers to the technical concept of a single attempt to run a Job.
 
 A `Job` defines what a job is and how it is to be executed, and a `JobInstance` is a purely organizational object to group executions together, primarily to enable correct restart semantics. A `JobExecution`, however, is the primary storage mechanism for what actually happened during a run and contains many more properties that must be controlled and persisted, as the following table shows:
+
+#### Step
+A `Step` is a domain object that encapsulates an independent, sequential phase of a batch job.
+
+execution context: 
+executions 간에 보존되어야 하는 데이터.
+The “property bag” containing any user data that needs to be persisted between executions.
+

@@ -59,3 +59,34 @@ class BillingJobApplicationTests {
     }
 }
 ```
+
+#### Job
+```java
+@Bean
+public Job myJob(JobRepository jobRepository, Step step1, Step step2) {
+  return new JobBuilder("job", jobRepository)
+    .start(step1)
+    .next(step2)
+    .build();
+}
+```
+
+#### Step
+```java
+@Bean
+public Step taskletStep(JobRepository jobRepository, Tasklet tasklet, PlatformTransactionManager transactionManager) {
+  return new StepBuilder("step1", jobRepository)
+    .tasklet(tasklet, transactionManager)
+    .build();
+}
+```
+
+```java
+@Bean
+public Step partitionedtStep(JobRepository jobRepository, Partitioner partitioner) {
+  return new StepBuilder("step1", jobRepository)
+    .partitioner("worker", partitioner)
+    .build();
+}
+```
+

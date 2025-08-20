@@ -187,3 +187,21 @@ run the tests
 ```java
 [~/exercises] $ ./mvnw clean test -Dspring.batch.job.enabled=false
 ```
+
+#### 청크-단위 처리
+
+```java
+@Bean
+public Step ingestFile(
+              JobRepository jobRepository,
+              PlatformTransactionManager transactionManager,
+              FlatFileItemReader<BillingData> billingDataFileReader,
+              JdbcBatchItemWriter<BillingData> billingDataTableWriter) {
+
+    return new StepBuilder("fileIngestion", jobRepository)
+            .<BillingData, BillingData>chunk(100, transactionManager)
+            .reader(billingDataFileReader)
+            .writer(billingDataTableWriter)
+            .build();
+}
+```

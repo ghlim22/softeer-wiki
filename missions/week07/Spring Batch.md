@@ -27,3 +27,35 @@ execution context:
 executions 간에 보존되어야 하는 데이터.
 The “property bag” containing any user data that needs to be persisted between executions.
 
+
+#### Test
+
+
+```java
+@SpringBatchTest
+@SpringBootTest
+@ExtendWith(OutputCaptureExtension.class)
+class BillingJobApplicationTests {
+  @Autowired
+  private Job job;
+
+  @Autowired
+ .private JobLauncher jobLauncher;
+ 
+    @Test
+    void testJobExecution(CapturedOutput output) throws Exception {
+        // given
+        JobParameters jobParameters = new JobParametersBuilder()
+            .addString("input.file", "/some/input/file")
+            .toJobParameters();
+    
+        // when
+        // ** Update the following line:
+        JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(jobParameters);
+    
+        // then
+        Assertions.assertTrue(output.getOut().contains("processing billing information from file /some/input/file"));
+        Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+    }
+}
+```

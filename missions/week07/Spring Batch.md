@@ -205,3 +205,60 @@ public Step ingestFile(
             .build();
 }
 ```
+
+
+```java
+public class FilePreparationTasklet implements Tasklet {
+
+  
+
+@Override
+
+public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+
+JobParameters jobParameters = contribution.getStepExecution().getJobParameters();
+
+String inputFile = jobParameters.getString("input.file");
+
+Path source = Paths.get(inputFile);
+
+Path target = Paths.get("staging", source.toFile().getName());
+
+Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+
+return RepeatStatus.FINISHED;
+
+}
+}
+
+```
+
+```java
+@Bean
+
+public Step step2(
+
+JobRepository jobRepository, JdbcTransactionManager transactionManager,
+
+ItemReader<BillingData> billingDataFileReader, ItemWriter<BillingData> billingDataTableWriter) {
+
+return new StepBuilder("fileIngestion", jobRepository)
+
+.<BillingData, BillingData>chunk(100, transactionManager)
+
+.reader(billingDataFileReader)
+
+.writer(billingDataTableWriter)
+
+.build();
+
+}
+
+```
+
+```java
+@Bean public Job job(JobRepository jobRepository, Step step1, Step step2) 
+{ 
+return new JobBuilder("BillingJob", jobRepository) .start(step1) .next(step2) .build(); 
+}
+```

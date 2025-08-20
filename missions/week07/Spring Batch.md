@@ -262,3 +262,9 @@ return new StepBuilder("fileIngestion", jobRepository)
 return new JobBuilder("BillingJob", jobRepository) .start(step1) .next(step2) .build(); 
 }
 ```
+
+
+#### 병렬 처리
+
+https://medium.com/@sunkyung/spring-batch-%EB%B3%91%EB%A0%AC%EC%B2%98%EB%A6%AC-with-partitioning-step-cc0f94ee0f66
+

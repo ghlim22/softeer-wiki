@@ -60,6 +60,25 @@ class BillingJobApplicationTests {
 }
 ```
 
+```java
+@test 
+void testjobexecution() throws exception {
+// given 
+JobParameters jobparameters = new jobparametersbuilder() .addstring("input.file", "src/main/resources/billing-2023-01.csv") .tojobparameters(); 
+// when 
+JobExecution jobexecution = this.joblaunchertestutils.launchjob(jobparameters);
+// then 
+assertions.assertequals(exitstatus.completed, jobexecution.getexitstatus());
+assertions.asserttrue(files.exists(paths.get("staging", "billing-2023-01.csv"))); 
+}
+
+```
+
+```
+[~/exercises] $ ./mvnw clean test -Dspring.batch.job.enabled=false
+```
+Job이 배치에서 자동 실행되는 것을 막기 위한 커맨드 (이게 없으면 테스트 때 job이 한 번 실행되고, 배치에서 job을 또 실행하여 job이 두 번 실행된다.)
+
 #### Job
 ```java
 @Bean
@@ -90,3 +109,81 @@ public Step partitionedtStep(JobRepository jobRepository, Partitioner partitione
 }
 ```
 
+```java
+package example.billingjob;
+
+  
+
+import java.nio.file.Files;
+
+import java.nio.file.Path;
+
+import java.nio.file.Paths;
+
+import java.nio.file.StandardCopyOption;
+
+  
+
+import org.springframework.batch.core.JobParameters;
+
+import org.springframework.batch.core.StepContribution;
+
+import org.springframework.batch.core.scope.context.ChunkContext;
+
+import org.springframework.batch.core.step.tasklet.Tasklet;
+
+import org.springframework.batch.repeat.RepeatStatus;
+
+  
+
+public class FilePreparationTasklet implements Tasklet {
+
+  
+
+@Override
+
+public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+
+JobParameters jobParameters = contribution.getStepExecution().getJobParameters();
+
+String inputFile = jobParameters.getString("input.file");
+
+Path source = Paths.get(inputFile);
+
+Path target = Paths.get("staging", source.toFile().getName());
+
+Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+
+return RepeatStatus.FINISHED;
+
+}
+
+}
+```
+
+```java
+@Bean public Step step1(JobRepository jobRepository, JdbcTransactionManager transactionManager) { 
+return new StepBuilder("filePreparation", jobRepository) .tasklet(new FilePreparationTasklet(), transactionManager) .build(); 
+}
+```
+
+```java
+@Bean public Job job(JobRepository jobRepository, Step step1) { 
+return new JobBuilder("BillingJob", jobRepository) .start(step1) .build(); 
+}
+```
+
+```java
+@Test void testJobExecution() throws Exception { 
+// given 
+JobParameters jobParameters = new JobParametersBuilder() .addString("input.file", "src/main/resources/billing-2023-01.csv") .toJobParameters(); 
+// when JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(jobParameters); 
+// then 
+Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus()); Assertions.assertTrue(Files.exists(Paths.get("staging", "billing-2023-01.csv"))); 
+}
+```
+
+run the tests
+```java
+[~/exercises] $ ./mvnw clean test -Dspring.batch.job.enabled=false
+```
